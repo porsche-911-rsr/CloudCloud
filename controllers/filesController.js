@@ -10,7 +10,7 @@ export const uploadFile = async (req, res) => {
         const file = req.file
 
         const fileUrl = `${process.env.APP_HOST}/uploads/${req.file.filename}`;
-
+        console.log(fileUrl)
         if(telegram_id) {
             axios.post(`https://cloud-api.yandex.net/v1/disk/resources/upload?path=${telegram_id}/${file.name}&url=${fileUrl}`, null, {
                 headers: { "Authorization": `OAuth ${process.env.YANDEX_ACCESS}`}
