@@ -1,39 +1,31 @@
-import {dbPool} from "../db/db.js";
 import axios from "axios";
 import dotenv from "dotenv";
+import * as fs from "fs";
 
 dotenv.config()
 
 export const uploadFile = async (req, res) => {
     try {
-        const FILE_URL = 'https://static.tildacdn.com/tild6535-3938-4633-b531-326132306334/image13.png'
         const { telegram_id } = req.body;
         const file = req.file
-        const getAsyncOperation = async (operation_url) => {
-            try {
-                const response = await axios.get(operation_url, { headers: { "Authorization": `OAuth ${process.env.YANDEX_ACCESS}` }});
-                console.log(response)
-                return response.data;
-            } catch (error) {
-                console.error("Error:", error);
-            }
-        }
 
-        res.status(500).send('Internal server error');
+        const fileUrl = `${process.env.APP_HOST}/uploads/${req.file.filename}`;
 
         if(telegram_id) {
-            axios.post(`https://cloud-api.yandex.net/v1/disk/resources/upload?path=${telegram_id}/image.png&url=${FILE_URL}`, null, {
-                headers: {
-                    "Authorization": `OAuth ${process.env.YANDEX_ACCESS}`
-                }
-            }).then(result => {
-                getAsyncOperation(result.data.href)
-                    .then((result) => {
-                        res.status(200).send(result)
-                    })
-                    .catch((error) => {
-                        console.error("Error:", error)
-                    });
+            axios.post(`https://cloud-api.yandex.net/v1/disk/resources/upload?path=${telegram_id}/${file.name}&url=${fileUrl}`, null, {
+                headers: { "Authorization": `OAuth ${process.env.YANDEX_ACCESS}`}
+            }).then(() => {
+                fs.unlink(req.file.path, (err) => {
+                    if (err) {
+                        console.error("Ошибка при удалении файла:", err);
+                        return;
+                    }
+                    console.log("Файл успешно удален");
+                });
+            })
+            .catch((err) => {
+                console.log(err)
+                res.status(500).send('Ошибка при загрузке файла');
             })
         }
         else {

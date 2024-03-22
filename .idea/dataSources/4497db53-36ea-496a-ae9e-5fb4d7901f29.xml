@@ -11,9 +11,9 @@
 4||10|c|G
 4||10|C|G
 4||10|T|G</Grants>
-      <IntrospectionStateNumber>749</IntrospectionStateNumber>
+      <IntrospectionStateNumber>744</IntrospectionStateNumber>
       <ServerVersion>16.2</ServerVersion>
-      <StartupTime>1711134111</StartupTime>
+      <StartupTime>1711140088</StartupTime>
       <TimeZones>true ACDT
 true ACSST
 false ACST
@@ -1411,7 +1411,7 @@ true posixrules
 13471||10|C|G
 13471||-9223372036854775808|U|G
 13471||10|U|G</Grants>
-      <IntrospectionStateNumber>749</IntrospectionStateNumber>
+      <IntrospectionStateNumber>744</IntrospectionStateNumber>
       <ObjectId>5</ObjectId>
       <OwnerName>postgres</OwnerName>
     </database>
@@ -4830,36 +4830,37 @@ true posixrules
     <schema id="263" parent="2" name="public">
       <Comment>standard public schema</Comment>
       <Current>1</Current>
-      <LastIntrospectionLocalTimestamp>2024-03-18.06:15:41</LastIntrospectionLocalTimestamp>
+      <IntrospectionStateNumber>744</IntrospectionStateNumber>
+      <LastIntrospectionLocalTimestamp>2024-03-22.20:43:19</LastIntrospectionLocalTimestamp>
       <ObjectId>2200</ObjectId>
       <StateNumber>524</StateNumber>
       <OwnerName>pg_database_owner</OwnerName>
     </schema>
     <sequence id="264" parent="263" name="files_id_seq">
       <DasType>integer|0s</DasType>
-      <ObjectId>16397</ObjectId>
+      <ObjectId>16393</ObjectId>
       <SequenceIdentity>1</SequenceIdentity>
       <StartValue>1</StartValue>
-      <StateNumber>744</StateNumber>
+      <StateNumber>732</StateNumber>
       <OwnerName>postgres</OwnerName>
     </sequence>
     <sequence id="265" parent="263" name="users_id_seq">
       <DasType>integer|0s</DasType>
-      <ObjectId>16388</ObjectId>
+      <ObjectId>16384</ObjectId>
       <SequenceIdentity>1</SequenceIdentity>
       <StartValue>1</StartValue>
-      <StateNumber>743</StateNumber>
+      <StateNumber>731</StateNumber>
       <OwnerName>postgres</OwnerName>
     </sequence>
     <table id="266" parent="263" name="files">
-      <ObjectId>16398</ObjectId>
-      <StateNumber>744</StateNumber>
+      <ObjectId>16394</ObjectId>
+      <StateNumber>732</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>postgres</OwnerName>
     </table>
     <table id="267" parent="263" name="users">
-      <ObjectId>16389</ObjectId>
-      <StateNumber>744</StateNumber>
+      <ObjectId>16385</ObjectId>
+      <StateNumber>732</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>postgres</OwnerName>
     </table>
@@ -4868,84 +4869,114 @@ true posixrules
       <DefaultExpression>nextval(&apos;files_id_seq&apos;::regclass)</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <StateNumber>744</StateNumber>
+      <StateNumber>732</StateNumber>
+      <SequenceId>16393</SequenceId>
       <TypeId>23</TypeId>
     </column>
     <column id="269" parent="266" name="user_id">
       <DasType>integer|0s</DasType>
       <Position>2</Position>
-      <StateNumber>744</StateNumber>
+      <StateNumber>732</StateNumber>
       <TypeId>23</TypeId>
     </column>
     <column id="270" parent="266" name="file_path">
       <DasType>varchar|0s</DasType>
       <Position>3</Position>
-      <StateNumber>744</StateNumber>
+      <StateNumber>732</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <column id="271" parent="266" name="file_name">
       <DasType>varchar|0s</DasType>
       <Position>4</Position>
-      <StateNumber>744</StateNumber>
+      <StateNumber>732</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <column id="272" parent="266" name="file_size">
       <DasType>integer|0s</DasType>
       <Position>5</Position>
-      <StateNumber>744</StateNumber>
+      <StateNumber>732</StateNumber>
       <TypeId>23</TypeId>
     </column>
     <column id="273" parent="266" name="uploaded_at">
       <DasType>timestamp|0s</DasType>
       <Position>6</Position>
-      <StateNumber>744</StateNumber>
+      <StateNumber>732</StateNumber>
       <TypeId>1114</TypeId>
     </column>
-    <index id="274" parent="266" name="files_pkey">
+    <foreign-key id="274" parent="266" name="files_user_id_fkey">
+      <ColNames>user_id</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>16402</ObjectId>
+      <StateNumber>732</StateNumber>
+      <RefKeyColPositions>1</RefKeyColPositions>
+      <RefTableId>16385</RefTableId>
+    </foreign-key>
+    <index id="275" parent="266" name="files_pkey">
       <ColNames>id</ColNames>
       <NameSurrogate>1</NameSurrogate>
-      <ObjectId>16404</ObjectId>
+      <ObjectId>16400</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>744</StateNumber>
+      <StateNumber>732</StateNumber>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <column id="275" parent="267" name="id">
+    <key id="276" parent="266" name="files_pkey">
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>16401</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>732</StateNumber>
+      <UnderlyingIndexId>16400</UnderlyingIndexId>
+    </key>
+    <column id="277" parent="267" name="id">
       <DasType>integer|0s</DasType>
       <DefaultExpression>nextval(&apos;users_id_seq&apos;::regclass)</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <StateNumber>743</StateNumber>
+      <StateNumber>731</StateNumber>
+      <SequenceId>16384</SequenceId>
       <TypeId>23</TypeId>
     </column>
-    <column id="276" parent="267" name="telegram_id">
+    <column id="278" parent="267" name="telegram_id">
       <DasType>integer|0s</DasType>
       <Position>2</Position>
-      <StateNumber>743</StateNumber>
+      <StateNumber>731</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <column id="277" parent="267" name="disk_space">
+    <column id="279" parent="267" name="disk_space">
       <DasType>integer|0s</DasType>
       <Position>3</Position>
-      <StateNumber>743</StateNumber>
+      <StateNumber>731</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <index id="278" parent="267" name="users_pkey">
+    <index id="280" parent="267" name="users_pkey">
       <ColNames>id</ColNames>
       <NameSurrogate>1</NameSurrogate>
-      <ObjectId>16393</ObjectId>
+      <ObjectId>16389</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>743</StateNumber>
+      <StateNumber>731</StateNumber>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <index id="279" parent="267" name="users_telegram_id_key">
+    <index id="281" parent="267" name="users_telegram_id_key">
       <ColNames>telegram_id</ColNames>
       <NameSurrogate>1</NameSurrogate>
-      <ObjectId>16395</ObjectId>
-      <StateNumber>743</StateNumber>
+      <ObjectId>16391</ObjectId>
+      <StateNumber>731</StateNumber>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
+    <key id="282" parent="267" name="users_pkey">
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>16390</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>731</StateNumber>
+      <UnderlyingIndexId>16389</UnderlyingIndexId>
+    </key>
+    <key id="283" parent="267" name="users_telegram_id_key">
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>16392</ObjectId>
+      <StateNumber>731</StateNumber>
+      <UnderlyingIndexId>16391</UnderlyingIndexId>
+    </key>
   </database-model>
 </dataSource>

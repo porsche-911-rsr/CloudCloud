@@ -1,8 +1,18 @@
 import {Router} from 'express'
 import {downloadFile, getAllUserFiles, getUserStorageInfo, uploadFile} from "../controllers/filesController.js";
-import multer from 'multer'
 import {checkAuthMiddleware} from "../middlewares/checkAuthMiddleware.js";
-const upload = multer();
+import multer from "multer";
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads/')
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.originalname)
+    }
+})
+const upload = multer({ storage: storage })
+
 
 const filesRoutes = new Router()
 
