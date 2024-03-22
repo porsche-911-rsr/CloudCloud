@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "5000:5000"
+    env_file:
+      - .env.production
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@db:5432/postgres
+    depends_on:
+      - db
+    networks:
+      - backend-network
+
+  db:
+    image: postgres:latest
+    container_name: db
+    ports:
+      - "5434:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    volumes:
+      - ./db/initDump.sql:/docker-entrypoint-initdb.d/initDump.sql
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - backend-network
+
+  redis:
+    image: redis:latest
+    container_name: redis_db
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - backend-network
+
+volumes:
+  redis-data:
+  postgres_data:
+
+networks:
+  backend-network:
+    driver: bridge
