@@ -43,8 +43,6 @@ services:
     ports:
       - '9000:9000'
       - '9001:9001'
-    networks:
-      - loki
     volumes:
       - 'minio_data:/data'
     environment:
