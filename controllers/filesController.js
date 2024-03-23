@@ -26,14 +26,26 @@ export const uploadFile = async (req, res) => {
             }
         })
 
+        const getAsyncOperation = (href) => {
+            axios.post(href, null, {
+                headers: { "Authorization": `OAuth ${process.env.YANDEX_ACCESS}`}
+            }).then((result) => {
+                return result
+            })
+            .catch((err) => {
+                return(err)
+            })
+        }
+
         const URL_TO_YANDEX_UPLOAD_QUERY = `https://cloud-api.yandex.net/v1/disk/resources/upload?path=${telegram_id}/${file.name}&url=${fileLink}`
         console.log(URL_TO_YANDEX_UPLOAD_QUERY)
 
         if(telegram_id) {
             axios.post(URL_TO_YANDEX_UPLOAD_QUERY, null, {
                 headers: { "Authorization": `OAuth ${process.env.YANDEX_ACCESS}`}
-            }).then(() => {
-                res.status(200).send('success')
+            }).then((result) => {
+                console.log(result)
+                res.status(200).json(result)
             })
             .catch((err) => {
                 console.log(err)
