@@ -30,16 +30,18 @@ export const uploadFile = async (req, res) => {
             }
         })
 
+        const URL_TO_YANDEX_UPLOAD_QUERY = `https://cloud-api.yandex.net/v1/disk/resources/upload?path=${telegram_id}/${file.name}&url=${fileLink}`
+        console.log(fileLink)
+
         if(telegram_id) {
-            axios.post(`https://cloud-api.yandex.net/v1/disk/resources/upload?path=${telegram_id}/${file.name}&url=${fileLink}`, null, {
+            axios.post(URL_TO_YANDEX_UPLOAD_QUERY, null, {
                 headers: { "Authorization": `OAuth ${process.env.YANDEX_ACCESS}`}
             }).then(() => {
-                deleteFileAndLink(fileName)
                 res.status(200).send('success')
             })
             .catch((err) => {
                 console.log(err)
-                res.status(500).send('Ошибка при загрузке файла');
+                res.status(500).send('Ошибка при загрузке файла', err);
             })
         }
         else {
