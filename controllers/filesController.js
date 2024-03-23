@@ -20,7 +20,7 @@ export const uploadFile = async (req, res) => {
 
         const fileLink = await uploadFileAndGetLink(fileName, filePath, file)
         console.log('\n\n\n' + fileLink + '\n\n\n')
-        const encodedLink = encodeURI(fileLink)
+        const encodedLink = encodeURIComponent(fileLink)
         console.log('\n\n\n' + encodedLink + '\n\n\n')
 
         fs.unlink(filePath, (err) => {
