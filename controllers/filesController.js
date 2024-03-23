@@ -49,11 +49,11 @@ export const uploadFile = async (req, res) => {
                 }
             })
 
-        fs.unlink(filePath, (err) => {
-            if (err) {
-                console.error('Error deleting file:', err);
-            }
-        })
+        // fs.unlink(filePath, (err) => {
+        //     if (err) {
+        //         console.error('Error deleting file:', err);
+        //     }
+        // })
     } catch (error) {
         console.error('Error executing query', error);
         res.status(500).send('Internal server error');
