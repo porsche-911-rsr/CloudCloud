@@ -19,6 +19,7 @@ export const uploadFile = async (req, res) => {
         })
 
         const fileLink = await uploadFileAndGetLink(fileName, filePath, file)
+        const encodedLink = encodeURIComponent(fileLink)
 
         fs.unlink(filePath, (err) => {
             if (err) {
@@ -39,7 +40,7 @@ export const uploadFile = async (req, res) => {
             })
         }
 
-        const URL_TO_YANDEX_UPLOAD_QUERY = `https://cloud-api.yandex.net/v1/disk/resources/upload?path=${telegram_id}/${file.name}&url=${fileLink}`
+        const URL_TO_YANDEX_UPLOAD_QUERY = `https://cloud-api.yandex.net/v1/disk/resources/upload?path=${telegram_id}/${file.name}&url=${encodedLink}`
 
         if(telegram_id) {
             console.log('\n\n\n' + URL_TO_YANDEX_UPLOAD_QUERY + '\n\n\n')
