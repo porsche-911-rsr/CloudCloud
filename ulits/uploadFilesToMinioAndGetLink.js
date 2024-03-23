@@ -1,13 +1,13 @@
 import {minioClient} from "../db/minio.js";
 
-export const uploadFileAndGetLink = (fileName, file) => {
+
+export const uploadFileAndGetLink = (fileName, filePath, file) => {
     return new Promise((resolve, reject) => {
-        const filePath = file.path
-        minioClient.fPutObject('logs', fileName, filePath, {}, function(err, etag) {
+        minioClient.fPutObject('logs', fileName, filePath, {'Content-Type': file.mimetype,}, function(err, etag) {
             if (err)  return reject(err)
-            const url = minioClient.protocol + '://' + minioClient.host + ':' + minioClient.port + '/' + bucketName + '/' + fileName
-            resolve(url)
         })
+        const url = minioClient.presignedGetObject('logs', fileName);
+        resolve(url)
     })
 }
 

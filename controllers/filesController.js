@@ -1,22 +1,34 @@
 import axios from "axios";
 import dotenv from "dotenv";
 import {deleteFileAndLink, uploadFileAndGetLink} from "../ulits/uploadFilesToMinioAndGetLink.js";
+import fs from "node:fs"
 
 dotenv.config()
 
 export const uploadFile = async (req, res) => {
     try {
         const { telegram_id } = req.body;
-        const file = req.file
-        const fileName = Date.now() + '-' + file.originalname
+        const file = req.files.file
+        const fileName = Date.now() + '-' + file.name
+        const filePath = `./uploads/${fileName}`
 
-        console.log(file)
-        console.log(fileName)
-        console.log(file.name)
+        fs.writeFile(filePath, file.data, (err) => {
+            if (err) {
+                console.error('Error saving file:', err);
+            } else {
+                console.log('File saved successfully:', filePath);
+            }
+        })
 
-        const fileLink = await uploadFileAndGetLink(fileName, file)
+        const fileLink = await uploadFileAndGetLink(fileName, filePath, file)
 
-        console.log(fileLink)
+        fs.unlink(filePath, (err) => {
+            if (err) {
+                console.error('Error deleting file:', err);
+            } else {
+                console.log('File deleted successfully');
+            }
+        })
 
         if(telegram_id) {
             axios.post(`https://cloud-api.yandex.net/v1/disk/resources/upload?path=${telegram_id}/${file.name}&url=${fileLink}`, null, {
