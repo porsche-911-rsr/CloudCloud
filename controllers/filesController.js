@@ -15,8 +15,6 @@ export const uploadFile = async (req, res) => {
         fs.writeFile(filePath, file.data, (err) => {
             if (err) {
                 console.error('Error saving file:', err);
-            } else {
-                console.log('File saved successfully:', filePath);
             }
         })
 
@@ -25,13 +23,11 @@ export const uploadFile = async (req, res) => {
         fs.unlink(filePath, (err) => {
             if (err) {
                 console.error('Error deleting file:', err);
-            } else {
-                console.log('File deleted successfully');
             }
         })
 
         const URL_TO_YANDEX_UPLOAD_QUERY = `https://cloud-api.yandex.net/v1/disk/resources/upload?path=${telegram_id}/${file.name}&url=${fileLink}`
-        console.log(fileLink)
+        console.log(URL_TO_YANDEX_UPLOAD_QUERY)
 
         if(telegram_id) {
             axios.post(URL_TO_YANDEX_UPLOAD_QUERY, null, {
