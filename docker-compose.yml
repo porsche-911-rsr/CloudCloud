@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.9'
 
 services:
   app:
@@ -36,19 +36,6 @@ services:
       - "6379:6379"
     volumes:
       - redis-data:/data
-
-  minio:
-    image: bitnami/minio:latest
-    container_name: minio
-    ports:
-      - '9000:9000'
-      - '9001:9001'
-    volumes:
-      - 'minio_data:/data'
-    environment:
-      - MINIO_ROOT_USER=loki
-      - MINIO_ROOT_PASSWORD=ghjwtcc14585
-      - MINIO_DEFAULT_BUCKETS=logs
 
 volumes:
   redis-data:
