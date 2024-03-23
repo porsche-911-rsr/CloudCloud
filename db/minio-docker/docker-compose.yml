@@ -13,3 +13,6 @@ services:
       - MINIO_ROOT_USER=loki
       - MINIO_ROOT_PASSWORD=ghjwtcc14585
       - MINIO_DEFAULT_BUCKETS=logs
+
+volumes:
+  minio_data:
