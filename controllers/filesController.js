@@ -1,6 +1,6 @@
 import axios from "axios";
 import dotenv from "dotenv";
-import {deleteFileAndLink, uploadFileAndGetLink} from "../ulits/uploadFilesToMinioAndGetLink.js";
+import {uploadFileAndGetLink} from "../ulits/uploadFilesToMinioAndGetLink.js";
 import fs from "node:fs"
 
 dotenv.config()
@@ -11,24 +11,6 @@ export const uploadFile = async (req, res) => {
         const file = req.files.file
         const fileName = Date.now() + '-' + file.name
         const filePath = `./uploads/${fileName}`
-
-        fs.writeFile(filePath, file.data, (err) => {
-            if (err) {
-                console.error('Error saving file:', err);
-            }
-        })
-
-        const fileLink = await uploadFileAndGetLink(fileName, filePath, file)
-        // console.log('\n\n\n' + fileLink + '\n\n\n')
-        // const encodedLink = encodeURIComponent(fileLink)
-        // console.log('\n\n\n' + encodedLink + '\n\n\n')
-
-        fs.unlink(filePath, (err) => {
-            if (err) {
-                console.error('Error deleting file:', err);
-            }
-        })
-
         const getAsyncOperation = async (result, url_to_yandex_query) => {
             axios.get(result.href, {
                 headers: { "Authorization": `OAuth ${process.env.YANDEX_ACCESS}`}
@@ -41,23 +23,37 @@ export const uploadFile = async (req, res) => {
             })
         }
 
+        fs.writeFile(filePath, file.data, (err) => {
+            if (err) {
+                console.error('Error saving file:', err);
+            }
+        })
 
-        const URL_TO_YANDEX_UPLOAD_QUERY = `https://cloud-api.yandex.net/v1/disk/resources/upload?path=${telegram_id}/${file.name}&url=${fileLink}`
+        uploadFileAndGetLink(fileName, filePath, file)
+            .then((res) => {
+                const fileLink = encodeURIComponent(res)
+                const URL_TO_YANDEX_UPLOAD_QUERY = `https://cloud-api.yandex.net/v1/disk/resources/upload?path=${telegram_id}%2F${file.name}&url=${fileLink}`
+                if(telegram_id) {
+                    axios.post(URL_TO_YANDEX_UPLOAD_QUERY, null, {
+                        headers: { "Authorization": `OAuth ${process.env.YANDEX_ACCESS}`}
+                    }).then((result) => {
+                        getAsyncOperation(result.data, URL_TO_YANDEX_UPLOAD_QUERY)
+                    })
+                        .catch((err) => {
+                            console.log(err)
+                            res.status(500).send('Ошибка при загрузке файла', err);
+                        })
+                }
+                else {
+                    res.status(400).send('Неверный tg id');
+                }
+            })
 
-        if(telegram_id) {
-            axios.post(URL_TO_YANDEX_UPLOAD_QUERY, null, {
-                headers: { "Authorization": `OAuth ${process.env.YANDEX_ACCESS}`}
-            }).then((result) => {
-                getAsyncOperation(result.data, URL_TO_YANDEX_UPLOAD_QUERY)
-            })
-            .catch((err) => {
-                console.log(err)
-                res.status(500).send('Ошибка при загрузке файла', err);
-            })
-        }
-        else {
-            res.status(400).send('Неверный tg id');
-        }
+        fs.unlink(filePath, (err) => {
+            if (err) {
+                console.error('Error deleting file:', err);
+            }
+        })
     } catch (error) {
         console.error('Error executing query', error);
         res.status(500).send('Internal server error');
