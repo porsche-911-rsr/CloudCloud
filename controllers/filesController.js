@@ -19,7 +19,9 @@ export const uploadFile = async (req, res) => {
         })
 
         const fileLink = await uploadFileAndGetLink(fileName, filePath, file)
+        console.log('\n\n\n' + fileLink + '\n\n\n')
         const encodedLink = encodeURIComponent(fileLink)
+        console.log('\n\n\n' + encodedLink + '\n\n\n')
 
         fs.unlink(filePath, (err) => {
             if (err) {
@@ -39,7 +41,7 @@ export const uploadFile = async (req, res) => {
             })
         }
 
-        console.log('\n\n\n' + encodedLink + '\n\n\n')
+
         const URL_TO_YANDEX_UPLOAD_QUERY = `https://cloud-api.yandex.net/v1/disk/resources/upload?path=${telegram_id}/${file.name}&url=${encodedLink}`
 
         if(telegram_id) {
