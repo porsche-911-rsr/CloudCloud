@@ -44,7 +44,7 @@ export const uploadFile = async (req, res) => {
             axios.post(URL_TO_YANDEX_UPLOAD_QUERY, null, {
                 headers: { "Authorization": `OAuth ${process.env.YANDEX_ACCESS}`}
             }).then((result) => {
-                res.status(200).send(result)
+                res.status(200).send(JSON.stringify(result))
             })
             .catch((err) => {
                 console.log(err)
