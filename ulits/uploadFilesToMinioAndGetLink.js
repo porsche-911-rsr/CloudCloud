@@ -6,7 +6,7 @@ export const uploadFileAndGetLink = (fileName, filePath, file) => {
         minioClient.fPutObject('logs', fileName, filePath, {'Content-Type': file.mimetype,}, function(err, etag) {
             if (err)  return reject(err)
         })
-        const url = minioClient.presignedGetObject('logs', fileName);
+        const url = encodeURIComponent(minioClient.presignedGetObject('logs', fileName))
         resolve(url)
     })
 }
