@@ -31,11 +31,11 @@ export const uploadFile = async (req, res) => {
             axios.get(result.href, {
                 headers: { "Authorization": `OAuth ${process.env.YANDEX_ACCESS}`}
             }).then((async_result) => {
-                res.status(200).send({...result.data, url_to_yandex_query, async_result})
+                res.status(200).send({...result, url_to_yandex_query, async_result: async_result.data})
             })
             .catch((err) => {
                 console.log(err)
-                res.status(500).send({...result.data, url_to_yandex_query, err})
+                res.status(500).send({...result, url_to_yandex_query, err})
             })
         }
 
