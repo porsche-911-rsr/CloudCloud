@@ -27,7 +27,7 @@ export const uploadFile = async (req, res) => {
         })
 
         const getAsyncOperation = async (result, url_to_yandex_query) => {
-            console.log('\n\n\n' + result + '\n\n\n')
+            console.log('\n\n\n' + result.href + '\n\n\n')
             axios.get(result.href, {
                 headers: { "Authorization": `OAuth ${process.env.YANDEX_ACCESS}`}
             }).then((async_result) => {
