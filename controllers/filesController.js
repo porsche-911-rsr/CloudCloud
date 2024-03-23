@@ -45,7 +45,7 @@ export const uploadFile = async (req, res) => {
                 headers: { "Authorization": `OAuth ${process.env.YANDEX_ACCESS}`}
             }).then((result) => {
                 console.log(result)
-                res.status(200).json(result)
+                res.status(200).send(result)
             })
             .catch((err) => {
                 console.log(err)
