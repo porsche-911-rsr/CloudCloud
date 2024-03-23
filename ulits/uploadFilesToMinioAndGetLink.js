@@ -7,7 +7,7 @@ export const uploadFileAndGetLink = (fileName, filePath, file) => {
             if (err)  return reject(err)
             if (etag) console.log(etag)
         })
-        const url = minioClient.presignedGetObject('logs', 'image.png')
+        const url = minioClient.presignedGetObject('logs', fileName)
         resolve(url)
     })
 }
