@@ -7,7 +7,7 @@ export const uploadFileAndGetLink = (fileName, filePath, file) => {
             if (err)  return reject(err)
         })
         const url = minioClient.presignedGetObject('logs', fileName);
-        resolve(url)
+        resolve(encodeURIComponent(url))
     })
 }
 
