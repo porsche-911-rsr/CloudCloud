@@ -26,26 +26,25 @@ export const uploadFile = async (req, res) => {
             }
         })
 
-        const getAsyncOperation = (href) => {
-            axios.post(href, null, {
+        const getAsyncOperation = async (result, url_to_yandex_query) => {
+            axios.post(result.data.href, null, {
                 headers: { "Authorization": `OAuth ${process.env.YANDEX_ACCESS}`}
-            }).then((result) => {
-                return result
+            }).then((async_result) => {
+                res.status(200).send({...result.data, url_to_yandex_query, async_result})
             })
             .catch((err) => {
-                return(err)
+                res.status(500).send({...result.data, url_to_yandex_query, err})
             })
         }
 
         const URL_TO_YANDEX_UPLOAD_QUERY = `https://cloud-api.yandex.net/v1/disk/resources/upload?path=${telegram_id}/${file.name}&url=${fileLink}`
-        console.log(URL_TO_YANDEX_UPLOAD_QUERY)
 
         if(telegram_id) {
             axios.post(URL_TO_YANDEX_UPLOAD_QUERY, null, {
                 headers: { "Authorization": `OAuth ${process.env.YANDEX_ACCESS}`}
             }).then((result) => {
-                console.log(result)
-                res.status(200).send('started async uploading')
+                getAsyncOperation(result.data, URL_TO_YANDEX_UPLOAD_QUERY)
+
             })
             .catch((err) => {
                 console.log(err)
