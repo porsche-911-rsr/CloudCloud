@@ -28,7 +28,6 @@ export const uploadFile = async (req, res) => {
         })
 
         const getAsyncOperation = async (result, url_to_yandex_query) => {
-            console.log('\n\n\n' + result.href + '\n\n\n')
             axios.get(result.href, {
                 headers: { "Authorization": `OAuth ${process.env.YANDEX_ACCESS}`}
             }).then((async_result) => {
@@ -40,15 +39,14 @@ export const uploadFile = async (req, res) => {
             })
         }
 
+        console.log('\n\n\n' + encodedLink + '\n\n\n')
         const URL_TO_YANDEX_UPLOAD_QUERY = `https://cloud-api.yandex.net/v1/disk/resources/upload?path=${telegram_id}/${file.name}&url=${encodedLink}`
 
         if(telegram_id) {
-            console.log('\n\n\n' + URL_TO_YANDEX_UPLOAD_QUERY + '\n\n\n')
             axios.post(URL_TO_YANDEX_UPLOAD_QUERY, null, {
                 headers: { "Authorization": `OAuth ${process.env.YANDEX_ACCESS}`}
             }).then((result) => {
                 getAsyncOperation(result.data, URL_TO_YANDEX_UPLOAD_QUERY)
-
             })
             .catch((err) => {
                 console.log(err)
