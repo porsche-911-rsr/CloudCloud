@@ -35,6 +35,7 @@ export const uploadFile = async (req, res) => {
                 headers: { "Authorization": `OAuth ${process.env.YANDEX_ACCESS}`}
             }).then(() => {
                 deleteFileAndLink(fileName)
+                res.status(200).send('success')
             })
             .catch((err) => {
                 console.log(err)
