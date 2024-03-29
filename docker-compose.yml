@@ -10,11 +10,21 @@ services:
     ports:
       - "5000:5000"
     env_file:
-      - .env.production
+    - .env.production
     environment:
       DATABASE_URL: postgres://postgres:postgres@db:5432/postgres
     depends_on:
       - db
+      - redis
+
+  bot:
+    container_name: bot
+    build:
+      context: .
+      dockerfile: ./bot/docker/Dockerfile
+    env_file:
+      - ./bot/.env
+    restart: always
 
   db:
     image: postgres:latest
